@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,
+            user-scalable=no">
+    <script type="module" src="https://pyscript.net/releases/2026.2.1/core.js"></script>
+    <!-- 外部pyscript -->
+    <script type="mpy" src="main.py"></script>
+    <script type="mpy" src="draw.py"></script>
+    <script type="mpy" src="control.py"></script>
+</head>
+
+<!-- ゲーム画面 -->
+<body style="text-align:center; padding:0; margin:0;">
+    <h3 id="info">ブロック崩し</h3>
+    <!-- ゲーム開始ボタン -->
+    <button id="start_button"
+        mpy-click="start_button_on_click">ゲームスタート</button>
+    <br><br>
+    <!-- ゲーム画面Canvas要素 -->
+    <canvas id="canvas" width="400" height="500"
+       mpy-click="canvas_on_click"
+       style="border:1px solid black;"></canvas>
+    <!--バーを動かすボタン -->
+    <button id="left_button" style="width:200px"
+        mpy-click="left_button_on_click">←　左へ</button>
+    <button id="right_button" style="width:200px"
+        mpy-click="right_button_on_click">右へ　→</button>
+</body>
+</html>
