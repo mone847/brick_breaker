@@ -2,8 +2,8 @@ def start_button_on_click(event):
     """スタートボタンがクリックされたときの処理"""
     # スタートボタンの無効化
     document.getElementById("start_button").disabled = True
-    # ゲーム初期化
-    init_game()
+    init_game() # ゲーム初期化
+    game_loop() # ゲームループ開始
 
 def player_move(dx):
     """プレイヤーのバーを移動する"""
