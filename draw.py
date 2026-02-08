@@ -4,7 +4,7 @@ def draw_screen():
     # ブロックの描画
     for y in range(ROWS):
         for x in range(COLS):
-            if blocks[y][x]==0:
+            if blocks[y][x] == 0:
                 continue  # ブロックがなければスキップ
             # ブロックの色を設定して描画
             context.fillStyle = BLOCK_COLORS[blocks[y][x]]
@@ -20,4 +20,4 @@ def draw_screen():
 
     # スコア表示
     if not game["game_over"]:
-        info.innerText = f"スコア: {game['score']}点"
+        info.innerText = f"ブロック崩し　スコア: {game['score']}点"
