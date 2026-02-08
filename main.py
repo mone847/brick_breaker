@@ -29,7 +29,7 @@ def init_game():
     # ブロックの初期化
     blocks = [[(y+1)] * COLS for y in range(ROWS)] 
     # ゲーム状態の初期化
-    px = canvas.width - PLAYER_W // 2 # プレイヤーのバーのX座標
+    px = (canvas.width - PLAYER_W) // 2 # プレイヤーのバーのX座標
     game = {
         "score":0, # スコア
         "px": px, # プレイヤーのバーのX座標
@@ -77,8 +77,7 @@ def update_ball():
     elif by > (canvas.height - BALL_SIZE):
         game_over("ゲームオーバー")
     # ボールの座標を記録
-    game["ball_x"] = bx
-    game["ball_y"] = by
+    game["ball_x"] = bx ; game["ball_y"] = by
 
 def check_blocks(bx,by):
     """ブロックとの衝突判定"""
