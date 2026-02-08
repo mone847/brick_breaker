@@ -11,7 +11,7 @@ def player_move(dx):
         return  # ゲームオーバー時は移動しない
     px = game["px"] + dx  # 新しいバーの位置
     # バーが画面外に出ないように制限
-    if 0 <= px <= canvas.width - PLAYER_W:
+    if 0 <= px <= (canvas.width - PLAYER_W):
         game["px"] = px
         draw_screen()
 
