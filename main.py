@@ -8,7 +8,7 @@ PLAYER_W = 100 # プレイヤーのバーの幅
 PLAYER_Y = 470  # プレイヤーのバーのY座標
 PLAYER_MOVE = 30 # プレイヤーのバーの移動量
 BALL_SPEED = 15 # ボールの速度
-BALL_SIZE = 15 # ボールのサイズ
+BALL_SIZE = 16 # ボールのサイズ
 BLOCK_W = 50 # ブロックの幅
 BLOCK_H = 20 # ブロックの高さ
 COLS = 400 // BLOCK_W # ブロックの列数
@@ -47,10 +47,9 @@ def game_loop():
     if not game["game_over"]:
         setTimeout(game_loop, INTERVAL)
 
-def ball_turn_angle(angle,range):
+def ball_turn_angle(angle):
     """ボールの角度をangleだけ変化させる"""
-    r = random.randint(-range, range)
-    game["ball_dir"] = (game["ball_dir"] + angle + r) % 360
+    game["ball_dir"] = (game["ball_dir"] + angle) % 360
 
 def update_ball():
     """ボール位置の更新"""
@@ -64,13 +63,13 @@ def update_ball():
     if (by >= PLAYER_Y) and (px <= bx < (px + PLAYER_W)):
         game["ball_dir"] = 255 + random.randint(0,90)
     # 壁との衝突判定
-    elif (bx < 0) or (bx >= canvas.width) or (by <=0):
-        ball_turn_angle(90,10) #角度変更
+    elif (bx < BALL_SIZE // 2) or (bx >= (canvas.width - BALL_SIZE // 2)) or (by <= BALL_SIZE // 2):
+        ball_turn_angle(90) #角度変更
     # ブロックとの衝突判定
     elif check_blocks(bx,by):
-        ball_turn_angle(180,20) #角度変更
+        ball_turn_angle(180) #角度変更
         game["score"] += 1 # スコア加算
-        # すべてのブロックを破壊したか判定
+        # すべてのブロックを破壊したか判定        
         if game["score"] >= COLS * ROWS:
             game_over("クリア！")
     # 穴に落ちたらゲームオーバー判定

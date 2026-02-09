@@ -15,20 +15,12 @@ def player_move(dx):
         game["px"] = px
         draw_screen()
 
-def right_button_on_click(event):
-    """右移動ボタンがクリックされたときの処理"""
-    player_move(PLAYER_MOVE)  # 右に移動
-
-def left_button_on_click(event):
-    """左移動ボタンがクリックされたときの処理"""
-    player_move(-1 * PLAYER_MOVE)  # 左に移動
-
 def key_down(event):
     """キーが押されたときの処理"""
     if event.key == "ArrowRight":
-        right_button_on_click(event)  # 右に移動
+       player_move(-1 * PLAYER_MOVE)  # 右に移動
     elif event.key == "ArrowLeft":
-        left_button_on_click(event)  # 左に移動
+        player_move(PLAYER_MOVE)  # 左に移動
 
 # キー押下イベントリスナーの登録
 document.addEventListener("keydown", key_down)
