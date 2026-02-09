@@ -5,7 +5,7 @@ from js import setTimeout, document
 # 定数の宣言
 INTERVAL = 50 # ボールの移動間隔（ミリ秒）
 PLAYER_W = 100 # プレイヤーのバーの幅
-PLAYER_Y = 480  # プレイヤーのバーのY座標
+PLAYER_Y = 470  # プレイヤーのバーのY座標
 PLAYER_MOVE = 30 # プレイヤーのバーの移動量
 BALL_SPEED = 15 # ボールの速度
 BALL_SIZE = 16 # ボールのサイズ
@@ -60,8 +60,9 @@ def update_ball():
     by = game["ball_y"] + dy # ボールの新しいY座標
     # プレーヤーのバーとの衝突判定
     px = game["px"] # プレイヤーのバーのX座標
-    if (by >= PLAYER_Y) and (px <= bx < (px + PLAYER_W)):
-        game["ball_dir"] =225 + random.randint(0,90)
+    if (by >= PLAYER_Y-10) and (px <= bx < (px + PLAYER_W)):
+        ball_turn_angle(180) #角度変更
+        # game["ball_dir"] =225 + random.randint(0,90)
     # 壁との衝突判定
     elif (bx < BALL_SIZE) or (bx >= (canvas.width - BALL_SIZE)) or (by <= BALL_SIZE):
         ball_turn_angle(90) #角度変更
