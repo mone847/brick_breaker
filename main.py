@@ -34,7 +34,7 @@ def init_game():
         "score":0, # スコア
         "px": px, # プレイヤーのバーのX座標
         "ball_x": (px + PLAYER_W // 2), # ボールのX座標
-        "ball_y": PLAYER_Y, # ボールのY座標
+        "ball_y": PLAYER_Y - random.randint(20,80), # ボールのY座標
         "ball_dir": 225 + random.randint(0,90), #ボールの進行方向
         "game_over": False, # ゲームオーバー状態
     }
