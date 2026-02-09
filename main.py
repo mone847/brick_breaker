@@ -61,7 +61,7 @@ def update_ball():
     # プレーヤーのバーとの衝突判定
     px = game["px"] # プレイヤーのバーのX座標
     if (by >= (PLAYER_Y - BALL_SIZE)) and (px <= bx < (px + PLAYER_W)):
-        game["ball_dir"] = 255 + random.randint(0,90)
+        ball_turn_angle(180) #角度変更
     # 壁との衝突判定
     elif (bx < BALL_SIZE) or (bx >= (canvas.width - BALL_SIZE)) or (by <= BALL_SIZE):
         ball_turn_angle(90) #角度変更
