@@ -20,7 +20,7 @@ def key_down(event):
     if event.key == "ArrowRight":
        player_move(PLAYER_MOVE)  # 右に移動
     elif event.key == "ArrowLeft":
-        player_move(PLAYER_MOVE)  # 左に移動
+        player_move(-1 * PLAYER_MOVE)  # 左に移動
 
 # キー押下イベントリスナーの登録
 document.addEventListener("keydown", key_down)
