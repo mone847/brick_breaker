@@ -1,4 +1,5 @@
 def start_button_on_click(event):
+    global loop_proxy
     document.getElementById("start_button").disabled = True
     init_game()
     # 速度推定の初期化
@@ -7,6 +8,10 @@ def start_button_on_click(event):
     _last_t = performance.now()
     _last_px = game["px"]
     game["paddle_vx"] = 0.0
+    
+    if loop_proxy is None:
+        loop_proxy = create_proxy(game_loop)
+
     game_loop()
 
 def _clamp(v, lo, hi):
