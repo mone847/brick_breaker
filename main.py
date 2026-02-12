@@ -28,18 +28,32 @@ def init_game():
     global blocks,game
     # ブロックの初期化
     blocks = [[(y+1)] * COLS for y in range(ROWS)] 
-    # ゲーム状態の初期化
+    # スピード
+    speed = 10  # 初期値
+    # ランダムな角度を作る
+    while True:
+        angle = random.uniform(200, 340)
+        if abs(math.cos(math.radians(angle))) > 0.3:
+            break
+    rad = math.radians(angle) 
+    
+    dx = speed * math.cos(rad)
+    dy = speed * math.sin(rad)
+
     px = (canvas.width - PLAYER_W) // 2 # プレイヤーのバーのX座標
-    game = {
+    game.update({
         "score":0, # スコア
         "px": px, # プレイヤーのバーのX座標
-        "ball_x": (px + PLAYER_W // 2), # ボールのX座標
-        "ball_y": PLAYER_Y - random.randint(20,80), # ボールのY座標
-        "ball_dir": 225 + random.randint(0,90), #ボールの進行方向
+        "ball_x": canvas.width / 2, # ボールのX座標
+        "ball_y": canvas.height / 2, # ボールのY座標
+        "dx": dx, 
+        "dy": dy,
         "game_over": False, # ゲームオーバー状態
-    }
+    })
+    
 
 def game_loop():
+
     """ゲームのメインループ"""
     update_ball() # ボールの位置更新
     draw_screen() # 画面の更新
@@ -47,41 +61,58 @@ def game_loop():
     if not game["game_over"]:
         setTimeout(game_loop, INTERVAL)
 
-def ball_turn_angle(angle):
-    """ボールの角度をangleだけ変化させる"""
-    game["ball_dir"] = (game["ball_dir"] + angle) % 360
-
 def update_ball():
+    global dx,dy
     """ボール位置の更新"""
-    rad = game["ball_dir"] * math.pi / 180 # 角度をラジアンに変換
-    dx = int(BALL_SPEED * math.cos(rad)) # X方向の移動量
-    dy = int(BALL_SPEED * math.sin(rad)) # Y方向の移動量
-    bx = game["ball_x"] + dx # ボールの新しいX座標
-    by = game["ball_y"] + dy # ボールの新しいY座標
-    # プレーヤーのバーとの衝突判定
-    px = game["px"] # プレイヤーのバーのX座標
-    if (by >= PLAYER_Y-18) and (px <= bx < (px + PLAYER_W)):
-        ball_turn_angle(180) #角度変更
-        # game["ball_dir"] =225 + random.randint(0,90)
-    # 壁との衝突判定
-    elif (bx < BALL_SIZE) or (bx >= (canvas.width - BALL_SIZE)) or (by <= BALL_SIZE):
-        ball_turn_angle(90) #角度変更
-    # ブロックとの衝突判定
-    elif check_blocks(bx,by):
-        ball_turn_angle(180) #角度変更
-        game["score"] += 1 # スコア加算
-        # すべてのブロックを破壊したか判定        
+    r = BALL_SIZE / 2
+
+    bx = game["ball_x"] + game["dx"]
+    by = game["ball_y"] + game["dy"]
+
+    dx = game["dx"]
+    dy = game["dy"]
+
+    # 上壁
+    if by - r <= 0:
+        by = r
+        dy = -dy
+    # 左右壁
+    if bx - r <= 0:
+        bx = r
+        dx = -dx
+    elif bx + r >= canvas.width:
+        bx = canvas.width - r
+        dx = -dx
+    # プレイヤーバー
+    px = game["px"]
+    if (by + r >= PLAYER_Y) and (px <= bx <= px + PLAYER_W):
+        by = PLAYER_Y - r
+        dy = -abs(dy)   # 必ず上に返す
+        # 当たった位置で横方向を調整
+        hit = (bx - (px + PLAYER_W/2)) / (PLAYER_W/2)
+        dx += hit * 1.5
+     # ブロック
+    elif check_blocks(bx, by):
+        dy = -dy
+        game["score"] += 1
+        # スピードアップ
+        dx *= 1.02
+        dy *= 1.02
         if game["score"] >= COLS * ROWS:
             game_over("クリア！")
-    # 穴に落ちたらゲームオーバー判定
-    elif by > (canvas.height - BALL_SIZE):
+    # 落下
+    elif by - r > canvas.height:
         game_over("ゲームオーバー")
-    # ボールの座標を記録
-    game["ball_x"] = bx ; game["ball_y"] = by
+
+    # 状態更新
+    game["ball_x"] = bx
+    game["ball_y"] = by
+    game["dx"] = dx
+    game["dy"] = dy
 
 def check_blocks(bx,by):
     """ブロックとの衝突判定"""
-    block_x, block_y = bx // BLOCK_W, by // BLOCK_H
+    block_x, block_y = int(bx // BLOCK_W), int(by // BLOCK_H)
     if 0 <= block_x < COLS and 0 <= block_y < ROWS:
         if blocks[block_y][block_x] != 0: # ブロックが存在する場合
             blocks[block_y][block_x] = 0 # ブロックを消す
