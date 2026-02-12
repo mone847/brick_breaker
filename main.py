@@ -62,7 +62,6 @@ def game_loop():
     draw_screen() # 画面の更新
     # ゲームオーバーでなければ次のループをセット
     if not game["game_over"]:
-            if not game["game_over"]:
         setTimeout(loop_proxy, INTERVAL)
         # setTimeout(create_proxy(game_loop), INTERVAL)
         # setTimeout(game_loop, INTERVAL)
